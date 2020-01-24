@@ -1,0 +1,27 @@
+version: '3'
+
+services: 
+  
+  database:
+    image: mongo
+    ports:
+     - "27017:27017"
+  
+  redis:
+    image: redis
+    container_name: redis_cache
+    ports:
+     - "6379:6379"
+
+  app:
+    build: .
+    ports:
+     - "3000:3000"
+    environment:
+     - DB_URL=database:27017
+    command: npm run dev      
+    depends_on:
+     - database
+     - redis
+    volumes:
+     - ".:/usr/modulo3"
